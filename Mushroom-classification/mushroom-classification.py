@@ -19,6 +19,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
+from xgboost import XGBClassifier
 
 mdata = pd.read_csv('mushrooms.csv')
 
@@ -52,8 +53,8 @@ for cap_color in  cap_color_labels:
 fig, ax = plt.subplots(figsize = (10,7))
 bare1 = ax.bar(ind, etotal, width = 0.4, align = 'center', color = 'r')
 barp1 = ax.bar(ind + 0.4, ptotal, width = 0.4, align = 'center', color = 'b')
-autolabel(barp1, 6)
-autolabel(bare1, 6)
+autolabel(barp1, 8)
+autolabel(bare1, 8)
 plt.title('cap-color')
 plt.xticks(ind + 0.2)
 ax.set_xticklabels(('brown' , 'buff' , 'cinnamon', 'gray', 'green', 'pink', 'purple', 'red', 'white', 'yellow'), fontsize = 12)
@@ -107,6 +108,7 @@ models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC()))
 models.append(('RF', RandomForestRegressor(random_state = 1)))
+models.append(('XGB', XGBClassifier()))
 results = []
 names = []
 
