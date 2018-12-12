@@ -8,6 +8,7 @@ Created on Wed Dec 12 01:17:35 2018
 
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 from sklearn import model_selection
@@ -52,18 +53,17 @@ array = train_data.values
 X = array[ : , 1 :]
 Y = array[ : , 0]
 
-train_x, test_x, train_y, test_y = model_selection.train_test_split(X, Y, test_size = 0.20, random_state = 1)
+train_x, test_x, train_y, test_y = model_selection.train_test_split(X, Y, test_size = 0.20, random_state = 6)
 
 
 #accuracy scores for various models
 models = []
-models.append(('LR', LogisticRegression()))
-
-models.append(('LDA', LinearDiscriminantAnalysis()))
-models.append(('KNN', KNeighborsClassifier()))
-models.append(('CART', DecisionTreeClassifier()))
-models.append(('NB', GaussianNB()))
-models.append(('SVM', SVC()))
+#models.append(('LR', LogisticRegression()))
+models.append(('LDA', LinearDiscriminantAnalysis(solver = 'lsqr')))
+#models.append(('KNN', KNeighborsClassifier()))
+#models.append(('CART', DecisionTreeClassifier()))
+#models.append(('NB', GaussianNB()))
+#models.append(('SVM', SVC()))
 #models.append(('RF', RandomForestRegressor(random_state = 1)))
 #models.append(('XGB', XGBClassifier()))
 
@@ -92,7 +92,7 @@ for name, model in models:
     print(name, accuracy_score(test_y, pred))
     
 
-LR 0.7988826815642458
+LR 0.7988826815642458   
 LDA 0.7932960893854749
 KNN 0.6983240223463687
 CART 0.7597765363128491
@@ -100,18 +100,25 @@ NB 0.7597765363128491
 SVM 0.6927374301675978
 '''
 
-lr = LogisticRegression()
-lr.fit(train_x, train_y)
-pred = lr.predict(test_data).astype(int)
+#generating output files for different models to compare scores
+for name, model in models:
+    model.fit(train_x, train_y)
+    pred = model.predict(test_data).astype(int)
+    #print(accuracy_score(test_y, pred))
+    #submit = pd.DataFrame({'PassengerId': PassengerId, 'Survived' : pred})
+    #submit.to_csv(name + 'titanic_submission.csv', index = False)
 
 
-
+'''
+Scores -
+LR - 0.75598
+CART - 0.72248
+KNN - 0.64593
+LDA - 0.76076
+'''
 
 submit = pd.DataFrame({'PassengerId': PassengerId, 'Survived' : pred})
-#submit = submit.set_index('PassengerId')
-
 submit.to_csv('titanic_submission.csv', index = False)
-
 
 
 
